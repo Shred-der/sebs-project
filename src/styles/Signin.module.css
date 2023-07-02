@@ -1,0 +1,245 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@1,900&display=swap');
+
+.container {
+background-color: #76B54F;
+background-size: cover;
+height: 900px;
+}
+
+.imgcontainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+  padding-bottom: 15px;
+}
+
+.img{
+  width: 100%;
+  height: auto;
+  max-width: 200px; /* adjust as needed for your design */
+}
+
+.title{
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+padding-top: 1rem;
+}
+
+.title h1{
+justify-self: normal;
+font-family: 'Poppins';
+font-size: 3rem;
+font-weight: 400px;
+color: #fff;
+margin-bottom: 8px;
+}
+
+.title p{
+    justify-self: normal;
+    font-family: 'Poppins';
+    font-size: 2rem;
+    font-weight: 700px;
+    color: #fff;
+    margin-bottom: 8px;
+    }
+
+.content {
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+}
+
+.content h1 {
+    font-family: 'Poppins';
+    font-size: 2rem;
+    color: #fff;
+    margin-bottom: 8px;
+    }
+    
+
+.content h2 {
+font-family: 'Poppins';
+font-size: 2rem;
+color: #4AC8A0;
+margin-bottom: 8px;
+}
+
+.content p {
+color: white;
+font-size: 20px;
+margin-bottom: 8px;
+}
+
+.content button {
+font-family: 'Poppins';
+cursor: pointer;
+border: none;
+border-radius: 10px;
+font-style: normal;
+font-weight: 700;
+background-image: linear-gradient(#000000, #000000);
+padding: 20px 31px 20px 30px;
+color:white;
+letter-spacing: 1px;
+font-size: 1.25rem;
+}
+
+.btncontent{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 8rem;
+}
+
+.btncontent button{
+    font-family: 'Poppins';
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    font-style: normal;
+    font-weight: 400px;
+    background-image: linear-gradient(#000000, #00000000);
+    padding: 20px 31px 20px 30px;
+    color:white;
+    letter-spacing: 1px;
+    font-size: 2rem;
+}
+
+.btncontent a{
+    justify-self: normal;
+    cursor: pointer;
+    font-family: 'Poppins';
+    font-size: 2rem;
+    font-weight: 700px;
+    color: #fff;
+    margin-bottom: 8px;
+    padding-top: 1rem;
+}
+
+.btncontent h1{
+  color: white;
+}
+
+.btncontent p{
+  color: white;
+}
+
+.img {
+    width: 30%;
+    height: 120%;
+  }
+  
+  @media only screen and (max-width: 767px) {
+    .img {
+      width: 50%;
+      height: auto;
+    }
+  }
+  
+  .title h1 {
+    font-family: 'Poppins';
+    font-size: 3rem;
+    font-weight: 700px;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+  
+  @media only screen and (max-width: 767px) {
+    .title h1 {
+      font-size: 2rem;
+    }
+  }
+  
+  .title p {
+    justify-self: normal;
+    font-family: 'Poppins';
+    font-size: 2rem;
+    font-weight: 700px;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+  
+  @media only screen and (max-width: 767px) {
+    .title p {
+      font-size: 1.5rem;
+    }
+  }
+  
+  .content h1 {
+    font-family: 'Poppins';
+    font-size: 2rem;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+  
+  @media only screen and (max-width: 767px) {
+    .content h1 {
+      font-size: 1.5rem;
+    }
+  }
+  
+  .content h2 {
+    font-family: 'Poppins';
+    font-size: 2rem;
+    color: #4AC8A0;
+    margin-bottom: 8px;
+  }
+  
+  @media only screen and (max-width: 767px) {
+    .content h2 {
+      font-size: 1.5rem;
+    }
+  }
+  
+  .content p {
+    color: white;
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+  
+  @media only screen and (max-width: 767px) {
+    .content p {
+      font-size: 16px;
+    }
+  }
+  
+  .content button {
+    font-family: 'Poppins';
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    font-style: normal;
+    font-weight: 700;
+    background-image: linear-gradient(#000000, #000000);
+    padding: 20px 31px 20px 30px;
+    color: white;
+    letter-spacing: 1px;
+    font-size: 1.25rem;
+  }
+  
+  @media only screen and (max-width: 767px) {
+    .content button {
+      font-size: 1rem;
+      padding: 10px 20px 10px 15px;
+    }
+  }
+  
+  .btncontent button {
+    font-family: 'Poppins';
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    font-style: normal;
+    font-weight: 400px;
+    background-image: linear-gradient(#000000, #000000);
+    padding: 20px 31px 20px 30px;
+    color: white;
+    letter-spacing: 1px;
+    font-size: 1.3rem;
+  }
+

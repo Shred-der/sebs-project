@@ -1,0 +1,371 @@
+@import url('https://fonts.googleapis.com/css2?family=PT+Mono&family=Poppins:ital,wght@1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+$primary-color: #FFDE17;
+$dark-color: #111;
+
+.preloader{
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    background-color: #000c;
+    transition: all 0.3s ease;
+    // backdrop-filter: blur(10px);
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+
+    &.show{
+        opacity: 1;
+        pointer-events: all;
+        visibility: visible;
+    }
+    
+    .preloader-circle{
+        width: 55px;
+        height: 55px;
+        border: 8px solid rgba($primary-color, 0.15);
+        border-bottom-color: $primary-color;
+        border-radius: 50%;
+        animation: preloader-circle 1s linear forwards infinite, preloader-circle-ii 1s ease forwards infinite alternate;
+
+        @media screen and (min-width: 1200px) {
+            width: 60px;
+            height: 60px;
+            border-width: 8px;
+        }
+
+        @media screen and (max-width: 660px) {
+            width: 50px !important;
+            // background: rgba(212, 0, 255, 0.422);
+            height: 50px !important;
+            border-width: 7.5px;
+        }
+
+        @media screen and (max-width: 400px) {
+            width: 48px !important;
+            height: 48px !important;
+            border-width: 7px;
+        }
+    }
+
+    @keyframes preloader-circle{
+        0%{
+            transform: rotate(360deg);
+        }
+        100%{
+
+        }
+    }
+
+    @keyframes preloader-circle-ii{
+        0%{
+            opacity: 0;
+        }
+        100%{
+            opacity: 1;
+        }
+    }
+}
+
+.loading, .show-signin{
+    .intro{
+        opacity: 0;
+        pointer-events: none;
+        visibility: hidden;
+        .holder{
+            .chat-box{
+                transform: translateX(-500px);
+                opacity: 0;
+                pointer-events: none;
+                
+                .chat-guy{
+                    transform: translateX(1000px);
+                    opacity: 0;
+                    pointer-events: none;
+                }
+            }
+        }
+    }
+
+    &.loading{
+        .intro{
+            opacity: 1;
+            pointer-events: all;
+            visibility: visible;
+        }
+    }
+}
+
+.home{
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    background-color: $dark-color;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+
+    .intro{
+        transition: all 0.5s ease;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        backdrop-filter: blur(4px);
+        top: 0;
+        left: 0;
+        background-color: #000c;
+        z-index: 2;
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+
+        .holder{
+            // max-width: 500px;
+            width: 100%;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            
+            .chat-box{
+                padding: 20px;
+                border-radius: 30px;
+                background-color: #fff;
+                color: #222;
+                position: relative;
+                padding-bottom: 60px;
+                margin-bottom: 100px;
+                width: 100%;
+                max-width: 400px;
+                box-shadow: 7px 7px 0px #000;
+                transition: all 0.5s ease;
+                
+
+                button{
+                    position: absolute;
+                    bottom: -24px;
+                    cursor: pointer;
+                    background-color: #222;
+                    color: #FFDE17;
+                    border: none;
+                    padding: 15px 20px;
+                    font-size: 18px;
+                    font-family: "Poppins";
+                    font-family: monospace;
+                    font-weight: 500;
+                    border-radius: 100px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 8px;
+                    overflow: hidden;
+
+                    &::before{
+                        content: "";
+                        position: absolute;
+                        width: 30px;
+                        height: 170%;
+                        left: -50px;
+                        filter: blur(10px);
+                        transform: rotate(30deg);
+                        background-color: #fff1;
+                        transition: all 0.5s ease;
+                    }
+
+                    svg{
+                        transition: all 0.5s ease;
+                    }
+
+                    &:hover{
+                        &::before{
+                            left: calc(100% + 30px);
+                        }
+
+                        svg{
+                            transform: rotate(360deg);
+                        }
+                    }
+                }
+
+                &::before{
+                    content: "";
+                    position: absolute;
+                    z-index: 2;
+                    background-color: #fff;
+                    width: 30px;
+                    height: 100px;
+                    bottom: -50px;
+                    right: 100px;
+                    border-radius: 0% 0% 0% 100% / 0% 0% 0% 100% ;
+                    transform: rotate(-40deg);
+                }
+                
+                &::after{
+                    content: "";
+                    border-radius: 0% 0% 0% 100% / 0% 0% 0% 100% ;
+                    position: absolute;
+                    z-index: 3;
+                    background-color: #000;
+                    width: 10px;
+                    height: 70px;
+                    bottom: -57px;
+                    right: 95px;
+                    // border-radius: 0% 0% 0% 100% / 0% 0% 0% 100% ;
+                    transform: rotate(-64deg);
+                    pointer-events: none;
+                }
+            }
+
+            .chat-guy{
+                position: absolute;
+                right: -60px;
+                bottom: -130px;
+                z-index: 4;
+                width: 110px;
+                height: 110px;
+                border-radius: 50%;
+                background-color: #FFDE17;
+                // background-image: linear-gradient(150deg,#ffde17, rgb(0, 0, 77));
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                transition: all 0.5s ease;
+
+                img{
+                    width: 70%;
+                }
+            }
+        }
+    }
+
+    .content{
+        font-family: "Raleway", serif;
+        background-color: #ffffff0f;
+        border-radius: 30px;
+        padding: 20px;
+        transition: all 0.5s ease;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+
+        .illustration-guy{
+            position: absolute;
+            top: -200px;
+            pointer-events: none;
+            img{
+                pointer-events: all;
+                width: 250px;
+            }
+        }
+
+        &:hover{
+            background-color: #ffffff1c;
+        }
+
+        & > div{
+            gap: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            &:first-child{
+                color: $primary-color;
+            }
+            
+            &:nth-child(2){
+                h1{
+                    color:#fff;
+                }
+
+                h2{
+                    color:rgb(155, 155, 248);
+                }
+
+                button{
+                    cursor: pointer;
+                    background-color: $dark-color;
+                    border: none;
+                    color: $primary-color;
+                    font-family: monospace;
+                    border: 2px solid transparent;
+                    transition: all 0.5s ease;
+                    border-radius: 10px;
+
+                    svg{
+                        transition: all 0.5s ease;
+                    }
+                }
+
+                .mr-menu-list{
+                    overflow: hidden;
+                    display: flex;
+                    flex-direction: column;
+                    margin-top: 10px;
+                    border-radius: 10px;
+                    background-color: rgba(#151515, 0.4);
+                    backdrop-filter: blur(10px);
+                    transition: all 0.5s ease;
+                    opacity: 0;
+                    visibility: hidden;
+                    pointer-events: none;
+                    transform: translateY(100%);
+                    
+                    .EGDgF{
+                        transition: all 0.5s ease;
+                        span{
+                            color: #fff;
+                        }
+
+                        &:hover{
+                            background-color: #ffffff0c;
+                        }
+                    }
+
+                    &:hover{
+                        background-color: #151515;
+                    }
+                }
+                
+                &>div{
+                    font-family: "PT Mono";
+                    margin-top: 20px;
+                    padding-bottom: 20px;
+                    &:hover{
+                        .mr-menu-list{
+                            opacity: 1;
+                            visibility: visible;
+                            pointer-events: all;
+                            transform: translateY(0);
+                        }
+                    }
+
+                    &:hover{
+                        button{
+                            svg{
+                                transform: rotate(180deg);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
