@@ -3,6 +3,7 @@ import { MeshProvider } from "@meshsdk/react";
 import { SessionProvider } from "next-auth/react";
 import './index.css';
 import "../styles/index.scss"
+import 'swiper/css'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
