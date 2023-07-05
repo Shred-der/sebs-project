@@ -12,11 +12,11 @@ const Intro = (props) => {
   }
 
   useEffect(()=>{
-    setTimeout(()=>{
-      let currentText = '';
-      let currentIndex = 0;
-  
-      const typingInterval = setInterval(() => {
+    let currentText = '';
+    let currentIndex = 0;
+
+    const typingInterval = setInterval(() => {
+      if(props.showIntro){
         if (currentIndex === textToType.length) {
           clearInterval(typingInterval);
           setHasSkipped(true)
@@ -26,11 +26,18 @@ const Intro = (props) => {
         currentText = textToType.slice(0, currentIndex + 1);
         setDisplayText(currentText);
         currentIndex++;
-      }, 60); // Adjust typing speed by changing the interval (e.g., 50 for faster, 200 for slower)
-  
-      return () => clearInterval(typingInterval);
-    }, 6000)
-  }, [])
+      }
+      
+      else{
+        setHasSkipped(false)
+        setDisplayText("")
+      }
+    }, 60); // Adjust typing speed by changing the interval (e.g., 50 for faster, 200 for slower)
+
+    return () => clearInterval(typingInterval);
+    // setTimeout(()=>{
+    // }, 6000)
+  }, [props.showIntro])
   return (
     <div className='intro'>
       <div className="holder">

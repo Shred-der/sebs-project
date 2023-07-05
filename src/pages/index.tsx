@@ -2,27 +2,41 @@ import React, { useEffect, useState } from 'react';
 import type { NextPage } from "next";
 import SignIn from "../components/Signin";
 import Preloader from "../components/Preloader"
+import HomePageBig from "../components/HomePageBig"
 
 const HomePage: NextPage = () => {
   const [isLoading, setIsLoading] = useState(true)
-  const [showSignIn, setShowSIgnIn] = useState(false)
+  const [showHomePage, setShowHomePage] = useState(false)
+  const [showIntro, setShowIntro] = useState(false)
+  const [showGetStarted, setShowGetStarted] = useState(false)
+
 
   useEffect(()=>{
     setTimeout(()=>{
       setIsLoading(false)
+      setShowHomePage(true)
     }, 5000)
   }, [])
 
   function showSignInComp(){
-    setShowSIgnIn(true)
+    setShowIntro(false)
+  }
+
+  function goToGetStarted(){
+    setShowGetStarted(true)
+    setShowIntro(true)
+  }
+  
+  function backtoHomePage(){
+    setShowGetStarted(false)
+    setShowIntro(false)
   }
 
   return (
-    <div className={`${showSignIn ? "show-signin" : ""} ${isLoading ? "loading" : ""} `}>
+    <div className={`${isLoading ? "loading" : ""} ${showGetStarted ? "showing-get-started" : ""}`}>
         <Preloader className={isLoading ? "show preloader" : "preloader"} />
-        <div>
-          <SignIn gotoSignIn={showSignInComp} />
-        </div>
+        <SignIn showIntro={showIntro} showGetStarted={showGetStarted} gotoSignIn={showSignInComp} backtoHomePage={backtoHomePage}/>
+        <HomePageBig className={showHomePage  ? "home-pg show" : "home-pg"} goToGetStarted={goToGetStarted}/>
     </div>
   );
 };

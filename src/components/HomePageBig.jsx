@@ -1,10 +1,14 @@
 import React from 'react'
 import Carousel from "./Carousel"
 import "swiper/css"
+import {HiSparkles} from "react-icons/hi"
 
-const Mockup = (props) => {
+const HomePageBig = (props) => {
   return (
     <div className={props.className}>
+        <button className="mint-nft" onClick={props.goToGetStarted}>
+            Mint NFT <HiSparkles />
+        </button>
       <div className="content-all">
         <div className="logo">
             <img width={100} src="./CNFTshirt.png" alt="logo" />
@@ -61,4 +65,4 @@ const Mockup = (props) => {
   )
 }
 
-export default Mockup
+export default HomePageBig
