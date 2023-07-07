@@ -9,6 +9,7 @@ import Intro from "../components/Intro"
 import PreviewShirt from "../components/PreviewShirt"
 import Preloader from './Preloader';
 import { FaArrowLeft, FaPowerOff } from 'react-icons/fa';
+import AnimatedBackgroundByRicchKidd44 from './AnimatedBackgroundByRicchKidd44';
 
 interface AssetMetadata {
   name: string;
@@ -98,6 +99,7 @@ export default function SignIn(props:any) {
     return (
       <>
         <div   className={`${props.showIntro ? "home show-intro": "home"} ${props.showGetStarted ? "home show": "home"}`}>
+          <AnimatedBackgroundByRicchKidd44 />
           <Intro showIntro={props.showGetStarted} gotoSignIn={gotoSignIn}/>
           <div className="backtoHome" onClick={props.backtoHomePage}>
             <FaArrowLeft />

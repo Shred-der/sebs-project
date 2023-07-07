@@ -26,12 +26,13 @@ const PreviewShirt = (props) => {
         
         <div className="shirts-holder">
             <div className={shirtAnim ? "shirt anim front" : "shirt front"}>
-                <img className='nft-img' src={nftImageSrc} alt="nft" />
+                <img className='nft-img i' src="./CNFTshirt.png" alt="nft" />
                 <img className='shirt-img' src={verifiedShirtColor === "white" ? "./shirt-images/white-tee.png" : "./shirt-images/black-tee.png"} alt="tee" />
             </div>
             <div className={shirtAnim ? "shirt anim front" : "shirt front"}>
                 <img className='nft-img' src={nftImageSrc} alt="nft" />
                 <img className='shirt-img' src={verifiedShirtColor === "white" ? "./shirt-images/white-tee-back.png" : "./shirt-images/black-tee-back.png"} alt="tee" />
+                <img src="./blank-qr-code.png" className='qr' alt="qr-code" />
             </div>
         </div>
         <div className="swap-img">

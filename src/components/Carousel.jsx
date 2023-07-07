@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
+import {BiLinkExternal} from "react-icons/bi"
 
 // Import Swiper styles
 import 'swiper/css';
@@ -19,13 +20,44 @@ export default function Carousel() {
     progressCircle.current.style.setProperty('--progress', 1 - progress);
     progressContent.current.textContent = `${Math.ceil(time / 1000)}s`;
   };
+  const verifiedProjects = [
+    {
+      projectName: "CardanoKidz",
+      projectImgUrl: "./verified-projects/cardanokidz.png",
+      projectUrl: "https://www.cardanocube.io/projects/cardanokidz"
+    },
+    {
+      projectName: "Spacebudz",
+      projectImgUrl: "./verified-projects/space-budz.png",
+      projectUrl: "https://spacebudz.io/"
+    },
+    {
+      projectName: "CardanoBits",
+      projectImgUrl: "./verified-projects/cardanobitz.png",
+      projectUrl: "https://cardanobits.art/"
+    },
+  ]
+
+  const verifiedProjectsEl = verifiedProjects.map((project)=>{
+    return (
+      <SwiperSlide>
+        <p>
+          {project.projectName}
+          <a href={project.projectUrl} target="_blank" rel="noreferrer">
+            <BiLinkExternal />
+          </a>
+        </p>
+        <img src={project.projectImgUrl} alt="image" />
+      </SwiperSlide>
+    )
+  })
   return (
     <>
       <Swiper
         spaceBetween={30}
         centeredSlides={true}
         autoplay={{
-          delay: 2500,
+          delay: 5000,
           disableOnInteraction: false,
         }}
         pagination={{
@@ -36,15 +68,7 @@ export default function Carousel() {
         onAutoplayTimeLeft={onAutoplayTimeLeft}
         className="mySwiper"
       >
-        <SwiperSlide>Project 1</SwiperSlide>
-        <SwiperSlide>Project 2</SwiperSlide>
-        <SwiperSlide>Project 3</SwiperSlide>
-        <SwiperSlide>Project 4</SwiperSlide>
-        <SwiperSlide>Project 5</SwiperSlide>
-        <SwiperSlide>Project 6</SwiperSlide>
-        <SwiperSlide>Project 7</SwiperSlide>
-        <SwiperSlide>Project 8</SwiperSlide>
-        <SwiperSlide>Project 9</SwiperSlide>
+        {verifiedProjectsEl}
         <div className="autoplay-progress" slot="container-end">
           <svg viewBox="0 0 48 48" ref={progressCircle}>
             <circle cx="24" cy="24" r="20"></circle>
