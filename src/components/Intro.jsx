@@ -32,7 +32,7 @@ const Intro = (props) => {
         setHasSkipped(false)
         setDisplayText("")
       }
-    }, 100); // Adjust typing speed by changing the interval (e.g., 50 for faster, 200 for slower)
+    }, 65); // Adjust typing speed by changing the interval (e.g., 50 for faster, 200 for slower)
 
     return () => clearInterval(typingInterval);
     // setTimeout(()=>{
