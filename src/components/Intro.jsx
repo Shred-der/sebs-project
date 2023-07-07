@@ -32,7 +32,7 @@ const Intro = (props) => {
         setHasSkipped(false)
         setDisplayText("")
       }
-    }, 65); // Adjust typing speed by changing the interval (e.g., 50 for faster, 200 for slower)
+    }, 60); // Adjust typing speed by changing the interval (e.g., 50 for faster, 200 for slower)
 
     return () => clearInterval(typingInterval);
     // setTimeout(()=>{
@@ -47,10 +47,10 @@ const Intro = (props) => {
             </div>
             <p>{hasSkipped ? textToType : displayText}</p>
             {/* <p>
-                Hello, I amm Shreddder <span>Ricch Kidd &lt;/&gt; </span> 
+                Isaac is an Upcoming <span>Ricch Kidd &lt;/&gt; </span> 
             </p>
             <p>
-                I will be your  <span>Isaac</span> to getting your NFT Shirt printed
+                Watch out for <span>Isaac</span> He isn't slowing down any time soon...
             </p>
             <p>
                 Click the button below to Get Started!!
