@@ -106,11 +106,11 @@ export default function SignIn(props:any) {
           </div>
           <div className="content">
             <div>
-              <h1>Seb's NFT Printing Project</h1>
+              <h1>Print Your CNFT Shirt</h1>
             </div>
             <div>
-              <h1>Connect your Wallet to print NFT</h1>
-              <h2>NFT PRINTING</h2>
+              <h1>Connect your Wallet to Print</h1>
+              <h2>CNFT PRINTING</h2>
               <CardanoWallet />
             </div>
             <div className="illustration-guy">
