@@ -7,9 +7,18 @@ import { BlockfrostProvider } from '@meshsdk/core';
 import styles from "../styles/Signin.module.css";
 import Intro from "../components/Intro"
 import PreviewShirt from "../components/PreviewShirt"
+import SelectNftIntro from "../components/SelectNftIntro"
 import Preloader from './Preloader';
-import { FaArrowLeft, FaPowerOff } from 'react-icons/fa';
+import { FaArrowLeft, FaPowerOff, FaQuestion } from 'react-icons/fa';
 import AnimatedBackgroundByRicchKidd44 from './AnimatedBackgroundByRicchKidd44';
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+import { Pagination, Navigation } from 'swiper/modules';
+
 
 interface AssetMetadata {
   name: string;
@@ -33,6 +42,7 @@ export default function SignIn(props:any) {
     imgUrl: ""
   })
   const blockfrostProvider = new BlockfrostProvider('mainnet50pMKefWQffC8MUvi6pD9dBZZH3RcDQB');
+  const [showNftIntroI, setShowNftIntro] = useState(true)
   
   function gotoSignIn(){
     props.gotoSignIn()
@@ -50,6 +60,7 @@ export default function SignIn(props:any) {
     const fetchAssets = async () => {
       if (connected) {
         setLoading(true);
+        props.setShowBot(true)
         const assetList = await wallet.getAssets();
         const assetData: Asset[] = await Promise.all(
           assetList.map(async (asset): Promise<Asset> => {
@@ -68,11 +79,39 @@ export default function SignIn(props:any) {
     window.location.reload()
   }
 
+  // const [viewNfts, setViewNfts] = useState(false)
+
+  const showshirty = props.showshirty
+  console.log(showshirty)
   const renderAssets = () => {
     return (
-      <div className='assets-container' style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+      <>
+        {props.showshirty ? <Swiper className='assets-container-carousel mySwiper' pagination={{
+          type: 'progressbar',
+        }} navigation={true} modules={[Pagination, Navigation]}>
+          {assets.map((asset) => {
+            const imageUrl = asset.metadata.image.replace('ipfs://', ''); // Remove the "ipfs://" prefix
+            const imageSrc = `https://ipfs.io/ipfs/${imageUrl}`; // Construct the corrected image URL
+            return (
+              <SwiperSlide className='nft-holder'>
+                <div onClick={()=>{
+                  const unit=asset.unit
+                  console.log(asset)
+                  openPreview(unit, imageSrc)
+                }} key={asset.unit} style={{ margin: '10px' }}>
+                  <img
+                    src={imageSrc}
+                    alt={asset.metadata.name}
+                    style={{ width: '200px', height: '200px', objectFit: 'cover' }}
+                  />
+                  <h3>{asset.metadata.name}</h3>
+                  {asset.metadata.description && <p>{asset.metadata.description}</p>}
+                </div>
+              </SwiperSlide>
+            );
+          })}
+        </Swiper> : <div className='assets-container' style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
         {assets.map((asset) => {
-          // console.log(asset.unit)
           const imageUrl = asset.metadata.image.replace('ipfs://', ''); // Remove the "ipfs://" prefix
           const imageSrc = `https://ipfs.io/ipfs/${imageUrl}`; // Construct the corrected image URL
           return (
@@ -84,14 +123,14 @@ export default function SignIn(props:any) {
               <img
                 src={imageSrc}
                 alt={asset.metadata.name}
-                style={{ width: '200px', height: '200px', objectFit: 'cover' }}
               />
               <h3>{asset.metadata.name}</h3>
               {asset.metadata.description && <p>{asset.metadata.description}</p>}
             </div>
           );
         })}
-      </div>
+      </div>}
+      </>
     );
   };
 
@@ -100,7 +139,7 @@ export default function SignIn(props:any) {
       <>
         <div   className={`${props.showIntro ? "home show-intro": "home"} ${props.showGetStarted ? "home show": "home"}`}>
           <AnimatedBackgroundByRicchKidd44 />
-          <Intro showIntro={props.showGetStarted} gotoSignIn={gotoSignIn}/>
+          <Intro hideShirty={props.hideShirty} showBot={props.showBot} setShowBot={props.setShowBot} showIntro={props.showGetStarted} gotoSignIn={gotoSignIn}/>
           <div className="backtoHome" onClick={props.backtoHomePage}>
             <FaArrowLeft />
           </div>
@@ -125,10 +164,26 @@ export default function SignIn(props:any) {
   if (loading) {
     return <Preloader className="preloader show black"/>;
   }
-  
+
   return (
     <>
-      <div className='wallet-home'>
+      {props.hideShirty ? <div className={`${showNftIntroI ? "wallet-home show-intro": "wallet-home"}`}>
+        <div className="backtoHome" onClick={disconnectWallet}>
+          <FaPowerOff /> <p>Disconnect Wallet</p>
+        </div>
+        <div className="question" onClick={()=>{
+          setShowNftIntro(true)
+        }}>
+          <FaQuestion />
+        </div>
+        <h1>Welcome, wallet connected!</h1>
+        <h2>Select your NFT</h2>
+        <div className="soft"></div>
+        <SelectNftIntro showIntro={showNftIntroI}  hideShirty={props.hideShirty} gotoSignIn={()=>{
+          setShowNftIntro(false)
+        }} />
+        {renderAssets()}
+      </div> : <div className={`${showNftIntroI ? "wallet-home show-intro": "wallet-home"}`}>
         <div className="backtoHome" onClick={disconnectWallet}>
           <FaPowerOff /> <p>Disconnect Wallet</p>
         </div>
@@ -136,7 +191,7 @@ export default function SignIn(props:any) {
         <h2>Select your NFT</h2>
         <div className="soft"></div>
         {renderAssets()}
-      </div>
+      </div>}
       <PreviewShirt closePreview={()=>{
         setShowPreview(false)
         setPreviewData({
