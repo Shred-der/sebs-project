@@ -64,7 +64,19 @@ export default function SignIn(props:any) {
         const assetList = await wallet.getAssets();
         const assetData: Asset[] = await Promise.all(
           assetList.map(async (asset): Promise<Asset> => {
+            console.log(asset.unit); // log the asset unit
             const metadata: AssetMetadata = await blockfrostProvider.fetchAssetMetadata(asset.unit);
+  
+            // Fetch asset details from Blockfrost
+            const assetDetailsResponse = await fetch(`https://cardano-mainnet.blockfrost.io/api/v0/assets/${asset.unit}`, {
+              headers: {
+                'project_id': 'mainnet50pMKefWQffC8MUvi6pD9dBZZH3RcDQB'
+              }
+            });
+            const assetDetails = await assetDetailsResponse.json();
+  
+            console.log(assetDetails); // log the asset details
+  
             return { ...asset, metadata };
           })
         );
@@ -74,6 +86,7 @@ export default function SignIn(props:any) {
     };
     fetchAssets();
   }, [connected]);
+  
 
   function disconnectWallet(){
     window.location.reload()

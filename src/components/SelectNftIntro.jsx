@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import {FaArrowRight, FaTimes} from "react-icons/fa"
 import {BsFillSkipEndFill} from "react-icons/bs"
 
-const Intro = (props) => {
-  const textToType = "Welcome to Seb's NFT Printing. I am SHIRTY and I will be your guide. Click the Button below to Get Started."
+const SelectNftIntro = (props) => {
+  const textToType = "Your Namil Wallet was connected successfully. Click the button below to select the NFT you want to MINT 👍"
   const [displayText, setDisplayText] = useState("")
   const [hasSkipped, setHasSkipped] = useState(false)
 
@@ -44,7 +44,7 @@ const Intro = (props) => {
   // const showBot = window.localStorage.getItem("show-bot")
   
   return (
-    <div className={props.showBot ? 'intro' : 'intro hide-me'}>
+    <div className={props.showIntro ? 'intro' : 'intro'}>
       <div className="holder">
         <div className={showConfirm ? "confirm show": "confirm"}>
           <div className="backdrop"></div>
@@ -54,8 +54,9 @@ const Intro = (props) => {
             </p>
             <div className="controls">
               <button onClick={()=>{
-                props.hideShirty()
-                props.gotoSignIn()
+                setTimeout(()=>{
+                  props.hideShirty()
+                }, 1500)
                 setShowConfirm(false)
               }}>I know</button>
               <button onClick={()=>{
@@ -79,7 +80,7 @@ const Intro = (props) => {
                 Click the button below to Get Started!!
             </p> */}
             <button className="continue-btn" onClick={props.gotoSignIn}>
-                Get Started <FaArrowRight size={14}/> 
+                Continue <FaArrowRight size={14}/> 
             </button>
             <div className="chat-guy">
               <div className="close" onClick={()=>{
@@ -94,12 +95,9 @@ const Intro = (props) => {
               {/* <img src="https://www.pngkit.com/png/detail/129-1296240_shredder-shredder-of-ninja-turtles.png" alt="chat-guy" /> */}
             </div>
         </div>
-        {/* <div className="chat-guy">
-          <img src="https://cdn-icons-png.flaticon.com/128/1507/1507155.png" alt="chat-guy" />
-        </div> */}
       </div>
     </div>
   )
 }
 
-export default Intro
+export default SelectNftIntro

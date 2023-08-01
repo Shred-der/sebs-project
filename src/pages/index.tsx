@@ -9,7 +9,7 @@ const HomePage: NextPage = () => {
   const [showHomePage, setShowHomePage] = useState(false)
   const [showIntro, setShowIntro] = useState(false)
   const [showGetStarted, setShowGetStarted] = useState(false)
-
+  const [showshirty, setShowshirty] = useState(true)
 
   useEffect(()=>{
     setTimeout(()=>{
@@ -32,10 +32,14 @@ const HomePage: NextPage = () => {
     setShowIntro(false)
   }
 
+  const [showBot, setShowBot] = useState(true)
+
   return (
-    <div className={`${isLoading ? "loading" : ""} ${showGetStarted ? "showing-get-started" : ""}`}>
+    <div className={`${isLoading ? "loading" : ""} ${showshirty === false ? "hide-shirty" : ""} ${showGetStarted ? "showing-get-started" : ""}`}>
         <Preloader className={isLoading ? "show preloader" : "preloader"} />
-        <SignIn showIntro={showIntro} showGetStarted={showGetStarted} gotoSignIn={showSignInComp} backtoHomePage={backtoHomePage}/>
+        <SignIn showshirty={showshirty} showIntro={showIntro} hideShirty={()=>{
+          setShowshirty(false)
+        }} showBot={showBot} setShowBot={setShowBot} showGetStarted={showGetStarted} gotoSignIn={showSignInComp} backtoHomePage={backtoHomePage}/>
         <HomePageBig className={showHomePage  ? "home-pg show" : "home-pg"} goToGetStarted={goToGetStarted}/>
     </div>
   );
