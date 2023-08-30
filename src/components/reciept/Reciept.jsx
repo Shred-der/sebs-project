@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { FaCheck, FaInfo, FaTimes } from 'react-icons/fa'
-import QRCode from 'react-qr-code'
+import html2canvas from 'html2canvas'
+import QRCode from 'react-qr-code';
 
-const PreviewShirt = (props) => {
+const Reciept = (props) => {
+    const [receiptImage, setReceiptImage] = useState(null);
+    const [imageLoaded, setImageLoaded] = useState(false)
+
     const nftImageSrc = props.previewData.imgUrl
-    const [shirtColor, setShirtColor] = useState("white")
+    const [shirtColor, setShirtColor] = useState("black")
     const [verifiedShirtColor, setVerifiedShirtColor] = useState("black")
     const [shirtAnim, setShirtAnim] = useState(true)
 
@@ -37,7 +40,7 @@ const PreviewShirt = (props) => {
           }
           return "https://explorer.cardano.org/en/transaction";
         });
-      },[previewData, props.className])
+    },[previewData, props.className])
       
 
     useEffect(()=>{
@@ -49,33 +52,48 @@ const PreviewShirt = (props) => {
             setVerifiedShirtColor(shirtColor)
         }, 300)
     }, [shirtColor])
+
+    const captureReceipt = async () => {
+        console.clear()
+        console.log("Please wait.....")
+        const receiptDiv = document.getElementById('reciept-element');
+        try{
+            const canvas = await html2canvas(receiptDiv);
+            const imgData = canvas.toDataURL('image/png');
+            setReceiptImage(imgData);
+            console.log("successful", imgData)
+            return imgData;
+        } catch {error =>
+            console.error(error.message)
+        }
+    };
+
   return (
-    <div className={props.className}>
-        <div className="cancel" onClick={props.closePreview}>
-            <FaTimes /> Cancel
+    <div className='reciept-holder' id='reciept'>
+        <div className="popup">
+            {receiptImage ? <img className='big' src={receiptImage} alt='' /> : <img src="./error-img.png" alt='' />}
+            {imageLoaded && <button onClick={captureReceipt}>Capture Reciept as PNG</button>}
         </div>
-      <div className="content">
-        <div className="info">
-            <p>
-                Shirt Preview
-            </p>
-            <div className="drop">
-                <FaInfo />
-                <div className="info-content">
-                    <p>
-                        Click the QRcode to make it visible for scanning 👍
-                    </p>
+        <div className="container" id='reciept-element'>
+            <section className="heading">
+                <div className="logo">
+                    <img src="./CNFTshirt.png" alt="" />
                 </div>
-            </div>
-        </div>
-        <div className="shirts-holder">
-            <div className={shirtAnim ? "shirt anim front" : "shirt front"}>
-                <img className='nft-img i' src="./CNFTshirt.png" alt="nft" />
-                <img className='shirt-img' src={verifiedShirtColor === "white" ? "./shirt-images/white-tee.png" : "./shirt-images/black-tee.png"} alt="tee" />
-            </div>
-            <div className={shirtAnim ? "shirt anim front" : "shirt front back"}>
-                <img className='nft-img' src={nftImageSrc} alt="nft" />
-                <img className='shirt-img' src={verifiedShirtColor === "white" ? "./shirt-images/white-tee-back.png" : "./shirt-images/black-tee-back.png"} alt="tee" />
+                <p>
+                    CNFT PRINT RECEIPT
+                </p>
+            </section>
+            <section className="shirts-holder">
+                <div className="shirt">
+                    <img className='shirt-img' src={verifiedShirtColor === "white" ? "./shirt-images/white-tee.png" : "./shirt-images/black-tee.png"} alt="tee" />
+                    <img className='logo' src="./CNFTshirt.png" alt="" />
+                </div>
+
+                <div className="shirt">
+                    <img className='shirt-img back' src={verifiedShirtColor === "white" ? "./shirt-images/white-tee-back.png" : "./shirt-images/black-tee-back.png"} alt="tee" />
+                    <img onLoad={()=>{
+                        setImageLoaded(true)
+                    }} className='nft-img' src={nftImageSrc} alt="nft" />
                     <div className={verifiedShirtColor === "white" ? "details" : "details white-text"}>
                         <h2>
                             {props.previewData?.asset?.metadata?.name && props.previewData.asset.metadata.name}
@@ -89,38 +107,21 @@ const PreviewShirt = (props) => {
                         <p className='tx-hash'>
                             {previewData?.asset?.assetDetails?.initial_mint_tx_hash && previewData.asset.assetDetails.initial_mint_tx_hash}
                         </p>
-                        <QRCode value={transactionHash} />
+                        <QRCode value={transactionHash} renderAs="canvas" />
                     </div>
-            </div>
+                </div>
+            </section>
+            <section className="tx-details">
+                <div className="detail">
+                    <h2>Mint Address</h2>
+                    <p>
+                        0x123456678901234
+                    </p>
+                </div>
+            </section>
         </div>
-        <div className="swap-img">
-            <div onClick={()=>{
-                setShirtColor("white")
-            }} className={`${shirtColor === "white" && "active"} white`}></div>
-            <div onClick={()=>{
-                setShirtColor("black")
-            }} className={`${shirtColor === "black" && "active"} black`}></div>
-        </div>
-        <div className="actions">
-            <button onClick={()=>{
-                const info = {
-                    productInfo: {
-                      type: "shirt",
-                      color: verifiedShirtColor,
-                      size: "normal",
-                    },
-                    nftInfo: {
-                      name: previewData.asset.metadata.name,
-                      txHash: transactionHash,
-                      imgUrl: previewData.imgUrl,
-                    }
-                }
-                props.openReciept(info)
-            }} className="proceed">Proceed <FaCheck /> </button>
-        </div>
-      </div>
     </div>
   )
 }
 
-export default PreviewShirt
+export default Reciept

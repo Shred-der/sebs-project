@@ -7,10 +7,12 @@ import { BlockfrostProvider } from '@meshsdk/core';
 import styles from "../styles/Signin.module.css";
 import Intro from "../components/Intro"
 import PreviewShirt from "../components/PreviewShirt"
+import PreviewReciept from "../components/PreviewReciept"
 import SelectNftIntro from "../components/SelectNftIntro"
 import Preloader from './Preloader';
 import { FaArrowLeft, FaPowerOff, FaQuestion } from 'react-icons/fa';
 import AnimatedBackgroundByRicchKidd44 from './AnimatedBackgroundByRicchKidd44';
+import Reciept from "../components/reciept/Reciept"
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 // Import Swiper styles
@@ -18,6 +20,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { Pagination, Navigation } from 'swiper/modules';
+import html2canvas from 'html2canvas';
 
 
 interface AssetMetadata {
@@ -38,23 +41,136 @@ export default function SignIn(props:any) {
   const [assets, setAssets] = useState<Asset[]>([]);
   const [showPreview, setShowPreview] = useState(false)
   const [previewData, setPreviewData] = useState({
-    unit: "",
+    asset: {},
     imgUrl: ""
   })
   const blockfrostProvider = new BlockfrostProvider('mainnet50pMKefWQffC8MUvi6pD9dBZZH3RcDQB');
   const [showNftIntroI, setShowNftIntro] = useState(true)
+
+  const [mintProcess, setMintProcess] = useState({
+    showPreviewShirt: false,
+    showReciept: false,
+    reciept: {
+      recieptImg: "",
+      hasFetched: false,
+      isFetching: false,
+      assetInfo: {
+        name: "",
+        desc: "",
+        todayDate: "",
+        shippingDate: "",
+        txHash: "",
+        nftImgUrl: "",
+        product: {
+          type: "shirt",
+          color: "white",
+          size: "normal",
+        },
+      }
+    }
+  })
+
+  const [recieptImage, setRecieptImage] = useState(null)
+
+  const captureReceipt = async () => {
+    console.clear()
+    console.log("Please wait.....")
+    try{
+      const receiptDiv = document.getElementById('reciept-element');
+      const canvas = await html2canvas(receiptDiv);
+      const imgData = canvas.toDataURL('image/png');
+      console.clear()
+      console.log("successful", imgData)
+      setRecieptImage(imgData)
+      setMintProcess((prev)=>{
+        return ({
+          ...prev,
+          reciept: {
+            ...prev.reciept,
+            recieptImg: imgData,
+            hasFetched: true,
+            isFetching: false,
+          }
+        })
+      })
+      return imgData;
+    } catch {error =>
+      console.error(error.message)
+    }
+  };
+
+  const clearRecieptData = ()=>{
+    
+    setTimeout(()=>{
+      setMintProcess({
+        showPreviewShirt: false,
+        showReciept: false,
+        reciept: {
+          recieptImg: "",
+          hasFetched: false,
+          isFetching: false,
+          assetInfo: {
+            name: "",
+            desc: "",
+            todayDate: "",
+            shippingDate: "",
+            txHash: "",
+            nftImgUrl: "",
+            product: {
+              type: "shirt",
+              color: "white",
+              size: "normal",
+            },
+          }
+        }
+      })
+    }, 500)
+  }
+
+  function generateReciept(info:any){
+    console.log(info)
+    const nftInfo = info.nftInfo
+    const productInfo = info.productInfo
+    captureReceipt()
+    setMintProcess((prev)=>{
+      return ({
+        ...prev,
+        reciept: {
+          ...prev.reciept,
+          recieptImg: "",
+          hasFetched: false,
+          isFetching: true,
+          assetInfo: {
+            name: nftInfo.name,
+            desc: "...",
+            todayDate: "DD/MM/YY",
+            shippingDate: "DD/MM/YY",
+            txHash: nftInfo.txHash,
+            nftImgUrl: nftInfo.imgUrl,
+            product: {
+              type: productInfo.type,
+              color: productInfo.color,
+              size: productInfo.size,
+            },
+          }
+        }
+      })
+    })
+  }
   
   function gotoSignIn(){
     props.gotoSignIn()
   }
 
-  const openPreview = (unit:any, imgUrl:any)=>{
+  const openPreview = (assetData:any, imgUrl:any)=>{
     setPreviewData({
-      unit: unit,
+      asset: assetData,
       imgUrl: imgUrl
     })
     setShowPreview(true)
   }
+
+  
   
   useEffect(() => {
     const fetchAssets = async () => {
@@ -77,7 +193,7 @@ export default function SignIn(props:any) {
   
             console.log(assetDetails); // log the asset details
   
-            return { ...asset, metadata };
+            return { ...asset, metadata, assetDetails: assetDetails };
           })
         );
         setAssets(assetData);
@@ -93,9 +209,6 @@ export default function SignIn(props:any) {
   }
 
   // const [viewNfts, setViewNfts] = useState(false)
-
-  const showshirty = props.showshirty
-  console.log(showshirty)
   const renderAssets = () => {
     return (
       <>
@@ -108,10 +221,11 @@ export default function SignIn(props:any) {
             return (
               <SwiperSlide className='nft-holder'>
                 <div onClick={()=>{
-                  const unit=asset.unit
-                  console.log(asset)
-                  openPreview(unit, imageSrc)
-                }} key={asset.unit} style={{ margin: '10px' }}>
+              const assetData=asset
+              console.clear()
+              console.log(assetData)
+              openPreview(assetData, imageSrc)
+            }} key={asset.unit} style={{ margin: '10px' }}>
                   <img
                     src={imageSrc}
                     alt={asset.metadata.name}
@@ -129,9 +243,10 @@ export default function SignIn(props:any) {
           const imageSrc = `https://ipfs.io/ipfs/${imageUrl}`; // Construct the corrected image URL
           return (
             <div onClick={()=>{
-              const unit=asset.unit
-              console.log(asset)
-              openPreview(unit, imageSrc)
+              const assetData=asset
+              console.clear()
+              console.log(assetData)
+              openPreview(assetData, imageSrc)
             }} key={asset.unit} style={{ margin: '10px' }}>
               <img
                 src={imageSrc}
@@ -179,7 +294,7 @@ export default function SignIn(props:any) {
   }
 
   return (
-    <>
+    <div className={`big-holder ${mintProcess.showReciept ? "show-reciept" : ""}`}>
       {props.hideShirty ? <div className={`${showNftIntroI ? "wallet-home show-intro": "wallet-home"}`}>
         <div className="backtoHome" onClick={disconnectWallet}>
           <FaPowerOff /> <p>Disconnect Wallet</p>
@@ -205,13 +320,32 @@ export default function SignIn(props:any) {
         <div className="soft"></div>
         {renderAssets()}
       </div>}
+      <div className={showPreview ? "backdrop show": "backdrop"}></div>
       <PreviewShirt closePreview={()=>{
         setShowPreview(false)
         setPreviewData({
-          unit:"",
+          asset:"",
           imgUrl: ""
         })
+      }} openReciept={(info:any)=>{
+        setMintProcess((prev)=>{
+          return({
+            ...prev,
+            showReciept: true,
+          })
+        })
+        generateReciept(info)
       }} previewData={previewData} className={showPreview ? "preview-shirt show": "preview-shirt"}/>
-    </>
+      <Reciept previewData={previewData} />
+      <PreviewReciept showing={mintProcess.showReciept} closeReciept={()=>{
+        setMintProcess((prev)=>{
+          return({
+            ...prev,
+            showReciept: false,
+          })
+        })
+        clearRecieptData()
+      }} previewData={previewData} isGenerating={mintProcess.reciept.isFetching} hasGenerated={mintProcess.reciept.hasFetched} recieptImage={recieptImage} />
+    </div>
   );
 }

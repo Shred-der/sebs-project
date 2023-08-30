@@ -3,7 +3,7 @@ import {FaArrowRight, FaTimes} from "react-icons/fa"
 import {BsFillSkipEndFill} from "react-icons/bs"
 
 const Intro = (props) => {
-  const textToType = "Welcome to Seb's NFT Printing. I am SHIRTY and I will be your guide. Click the Button below to Get Started."
+  const textToType = "Click the Button below to connect your Wallet and Get Started."
   const [displayText, setDisplayText] = useState("")
   const [hasSkipped, setHasSkipped] = useState(false)
 

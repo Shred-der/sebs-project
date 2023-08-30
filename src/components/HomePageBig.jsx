@@ -1,16 +1,34 @@
 import React, {useState} from 'react'
-import Carousel from "./Carousel"
 import "swiper/css"
 import Holder from "./Holder"
 import {HiSparkles} from "react-icons/hi"
 import AnimatedBackgroundByRicchKidd44 from "../components/AnimatedBackgroundByRicchKidd44"
+import ShirtyInfo from "../components/ShirtyInfo"
 
 const HomePageBig = (props) => {
     const [currentHolder, setCurrentHolder] = useState("i")
+    const [showShirtyInfo, setShowShirtyInfo] = useState(false)
   return (
-    <div className={props.className}>
+    <div className={`${props.className} ${showShirtyInfo ? "show-shirty" : ""}`}>
+        <ShirtyInfo close={()=>{
+            setShowShirtyInfo(false)
+        }} showShirty={()=>{
+            props.goToGetStarted()
+            props.toggleShirty(true)
+            setTimeout(()=>{
+                setShowShirtyInfo(false)
+            }, 700)
+        }} hideShirty={()=>{
+            props.goToGetStarted()
+            props.toggleShirty(false)
+            setTimeout(()=>{
+                setShowShirtyInfo(false)
+            }, 700)
+        }} />
       <AnimatedBackgroundByRicchKidd44 />
-        <button className="mint-nft" onClick={props.goToGetStarted}>
+        <button className="mint-nft" onClick={()=>{
+            setShowShirtyInfo(true)
+        }}>
             Print NFT Shirt <HiSparkles />
         </button>
       <div className='content-all'>
