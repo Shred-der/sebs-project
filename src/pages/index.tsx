@@ -40,7 +40,7 @@ const HomePage: NextPage = () => {
         <SignIn showshirty={showshirty} showIntro={showIntro} hideShirty={()=>{
           setShowshirty(false)
         }} showBot={showBot} setShowBot={setShowBot} showGetStarted={showGetStarted} gotoSignIn={showSignInComp} backtoHomePage={backtoHomePage}/>
-        <HomePageBig toggleShirty={(value)=>{
+        <HomePageBig toggleShirty={(value:boolean)=>{
           setShowshirty(value)
         }} className={showHomePage  ? "home-pg show" : "home-pg"} goToGetStarted={goToGetStarted}/>
     </div>

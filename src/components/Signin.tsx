@@ -12,6 +12,7 @@ import SelectNftIntro from "../components/SelectNftIntro"
 import Preloader from './Preloader';
 import { FaArrowLeft, FaPowerOff, FaQuestion } from 'react-icons/fa';
 import AnimatedBackgroundByRicchKidd44 from './AnimatedBackgroundByRicchKidd44';
+import SwiperComponentErrorFix from './SwiperComponentErrorFix';
 import Reciept from "../components/reciept/Reciept"
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -70,18 +71,21 @@ export default function SignIn(props:any) {
     }
   })
 
-  const [recieptImage, setRecieptImage] = useState(null)
+  const [recieptImage, setRecieptImage] = useState("")
 
   const captureReceipt = async () => {
     console.clear()
     console.log("Please wait.....")
     try{
       const receiptDiv = document.getElementById('reciept-element');
-      const canvas = await html2canvas(receiptDiv);
+      if(receiptDiv){
+        const canvas = await html2canvas(receiptDiv);
       const imgData = canvas.toDataURL('image/png');
       console.clear()
       console.log("successful", imgData)
-      setRecieptImage(imgData)
+      if(imgData){
+        setRecieptImage(imgData)
+      }
       setMintProcess((prev)=>{
         return ({
           ...prev,
@@ -94,8 +98,11 @@ export default function SignIn(props:any) {
         })
       })
       return imgData;
-    } catch {error =>
-      console.error(error.message)
+      }else{
+        console.error("didn't find reciept")
+      }
+    } catch {
+      console.error("AN error occured")
     }
   };
 
@@ -212,32 +219,7 @@ export default function SignIn(props:any) {
   const renderAssets = () => {
     return (
       <>
-        {props.showshirty ? <Swiper className='assets-container-carousel mySwiper' pagination={{
-          type: 'progressbar',
-        }} navigation={true} modules={[Pagination, Navigation]}>
-          {assets.map((asset) => {
-            const imageUrl = asset.metadata.image.replace('ipfs://', ''); // Remove the "ipfs://" prefix
-            const imageSrc = `https://ipfs.io/ipfs/${imageUrl}`; // Construct the corrected image URL
-            return (
-              <SwiperSlide className='nft-holder'>
-                <div onClick={()=>{
-              const assetData=asset
-              console.clear()
-              console.log(assetData)
-              openPreview(assetData, imageSrc)
-            }} key={asset.unit} style={{ margin: '10px' }}>
-                  <img
-                    src={imageSrc}
-                    alt={asset.metadata.name}
-                    style={{ width: '200px', height: '200px', objectFit: 'cover' }}
-                  />
-                  <h3>{asset.metadata.name}</h3>
-                  {asset.metadata.description && <p>{asset.metadata.description}</p>}
-                </div>
-              </SwiperSlide>
-            );
-          })}
-        </Swiper> : <div className='assets-container' style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+        {props.showshirty ? <><SwiperComponentErrorFix assets={assets} openPreview={openPreview} /></> : <div className='assets-container' style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
         {assets.map((asset) => {
           const imageUrl = asset.metadata.image.replace('ipfs://', ''); // Remove the "ipfs://" prefix
           const imageSrc = `https://ipfs.io/ipfs/${imageUrl}`; // Construct the corrected image URL
