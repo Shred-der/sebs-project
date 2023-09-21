@@ -37,7 +37,7 @@ const PreviewShirt = (props) => {
           }
           return "https://explorer.cardano.org/en/transaction";
         });
-      },[previewData, props.className])
+    },[previewData, props.className])
       
 
     useEffect(()=>{
@@ -49,6 +49,7 @@ const PreviewShirt = (props) => {
             setVerifiedShirtColor(shirtColor)
         }, 300)
     }, [shirtColor])
+
   return (
     <div className={props.className}>
         <div className="cancel" onClick={props.closePreview}>
@@ -115,7 +116,13 @@ const PreviewShirt = (props) => {
                       imgUrl: previewData.imgUrl,
                     }
                 }
-                props.openReciept(info)
+                props.updatePreviewData({
+                    type: "shirt",
+                    color: verifiedShirtColor,
+                    size: "medium",
+                    variant: "default",
+                })
+                props.openDetails(info)
             }} className="proceed">Proceed <FaCheck /> </button>
         </div>
       </div>

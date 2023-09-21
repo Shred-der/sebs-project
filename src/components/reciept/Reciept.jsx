@@ -5,9 +5,10 @@ import QRCode from 'react-qr-code';
 const Reciept = (props) => {
     const [receiptImage, setReceiptImage] = useState(null);
     const [imageLoaded, setImageLoaded] = useState(false)
+    const previewData = props.previewData
 
     const nftImageSrc = props.previewData.imgUrl
-    const [shirtColor, setShirtColor] = useState("black")
+    const shirtColor = previewData.itemDetails.color?previewData.itemDetails.color:"white";
     const [verifiedShirtColor, setVerifiedShirtColor] = useState("black")
     const [shirtAnim, setShirtAnim] = useState(true)
 
@@ -15,7 +16,6 @@ const Reciept = (props) => {
     
     const [transactionHash, setTransactionHash] = useState("https://explorer.cardano.org/en/transaction")
 
-    const previewData = props.previewData
 
     useEffect(() => {
         const currentDate = new Date();
@@ -31,14 +31,15 @@ const Reciept = (props) => {
     
 
     useEffect(()=>{
-        setTransactionHash((prev)=>{
+        setTransactionHash(()=>{
           if(previewData && previewData.asset && previewData.asset.assetDetails) {
             const transactionHash = previewData.asset.assetDetails.initial_mint_tx_hash;
             if(transactionHash){
               return `https://explorer.cardano.org/en/transaction?id=${transactionHash}`;
             } 
+          } else{
+            return "https://explorer.cardano.org/en/transaction";
           }
-          return "https://explorer.cardano.org/en/transaction";
         });
     },[previewData, props.className])
       
@@ -50,7 +51,7 @@ const Reciept = (props) => {
         }, 500)
         setTimeout(()=>{
             setVerifiedShirtColor(shirtColor)
-        }, 300)
+        }, 100)
     }, [shirtColor])
 
     const captureReceipt = async () => {
@@ -107,7 +108,7 @@ const Reciept = (props) => {
                         <p className='tx-hash'>
                             {previewData?.asset?.assetDetails?.initial_mint_tx_hash && previewData.asset.assetDetails.initial_mint_tx_hash}
                         </p>
-                        <QRCode value={transactionHash} renderAs="canvas" />
+                        <QRCode value={transactionHash} renderas="canvas" />
                     </div>
                 </div>
             </section>

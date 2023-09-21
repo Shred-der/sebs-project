@@ -3,6 +3,17 @@
 $primary-color: #FFDE17;
 $dark-color: #111;
 
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+::selection{
+    background-color: #000;
+    color: #ffdc17;
+}
+
 body{
     background-image: linear-gradient(  rgb(22, 22, 38),#1e1b10,#000000);
 }
@@ -1474,26 +1485,74 @@ body{
         // transform: translateX(-100%) !important;
     }
 
-    .preview-reciept{
+    .preview-reciept, .user-form, .user-details{
         transform: translateX(100%);
-
+        pointer-events: none;
+        visibility: hidden;
         .actions{
             border-radius: inherit;
         }
     }
 
-    &.show-reciept{
+    &.show-form{
         .preview-shirt{
             transform: translateX(-100%);
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .user-details, .preview-reciept{
+            transform: translateX(100%);
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .user-form{
+            transform: translateX(0);
+            visibility: visible;
+            pointer-events: all;
+        }
+
+    }
+
+    &.show-details{
+        .preview-shirt, .user-form{
+            transform: translateX(-100%);
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .preview-reciept{
+            transform: translateX(100%);
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .user-details{
+            transform: translateX(0);
+            visibility: visible;
+            pointer-events: all;
+        }
+
+    }
+
+    &.show-reciept{
+        .preview-shirt, .user-form, .user-details{
+            transform: translateX(-100%);
+            visibility: hidden;
+            pointer-events: none;
         }
 
         .preview-reciept{
             transform: translateX(0);
+            visibility: visible;
+            pointer-events: all;
         }
+
     }
 }
 
-.preview-reciept{
+.preview-reciept, .user-details, .user-form{
     position: fixed;
     top: 0;
     left: 0;
@@ -1507,6 +1566,7 @@ body{
     overflow: hidden;
     padding: 40px 15px;
     padding-top: 70px;
+    pointer-events: none;
     
     .back{
         position: fixed;

@@ -14,6 +14,8 @@ import { FaArrowLeft, FaPowerOff, FaQuestion } from 'react-icons/fa';
 import AnimatedBackgroundByRicchKidd44 from './AnimatedBackgroundByRicchKidd44';
 import SwiperComponentErrorFix from './SwiperComponentErrorFix';
 import Reciept from "../components/reciept/Reciept"
+import UserForm from "../components/UserForm"
+import UserDetails from "../components/UserDetails"
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 // Import Swiper styles
@@ -43,14 +45,75 @@ export default function SignIn(props:any) {
   const [showPreview, setShowPreview] = useState(false)
   const [previewData, setPreviewData] = useState({
     asset: {},
-    imgUrl: ""
+    imgUrl: "",
+    itemDetails: {
+      type: "shirt",
+      color: "white",
+      size: "medium",
+      variant: "default",
+    },
   })
+  const [userInfo, setUserInfo] = useState({
+    saved: false,
+    shipping: {
+      country: "USA",
+      city: "New York",
+      discordUrl: "",
+      emailAddress: "",
+      address: "",
+      markedLocation: {
+        longitude: 0,
+        latitude: 0,
+      }
+    },
+  })
+
+  const updatePreviewData = (itemDetails:any)=>{
+    setPreviewData((prev)=>{
+      return ({
+        ...prev,
+        itemDetails: itemDetails,
+      })
+    })
+  }
+
+  const updateUser = (data:any)=>{
+    setUserInfo(()=>{
+      return ({
+        saved: true,
+        shipping: data.shipping,
+      })
+    })
+  }
+
+  const clearUser = ()=>{
+    setUserInfo(()=>{
+      return ({
+        saved: false,
+        shipping: {
+          country: "USA",
+          city: "New York",
+          discordUrl: "",
+          emailAddress: "",
+          address: "",
+          markedLocation: {
+            longitude: 0,
+            latitude: 0,
+          }
+        },
+      })
+    })
+  }
+
   const blockfrostProvider = new BlockfrostProvider('mainnet50pMKefWQffC8MUvi6pD9dBZZH3RcDQB');
   const [showNftIntroI, setShowNftIntro] = useState(true)
 
   const [mintProcess, setMintProcess] = useState({
     showPreviewShirt: false,
     showReciept: false,
+    showForm: false,
+    disableForm: false,
+    showDetails: false,
     reciept: {
       recieptImg: "",
       hasFetched: false,
@@ -72,6 +135,8 @@ export default function SignIn(props:any) {
   })
 
   const [recieptImage, setRecieptImage] = useState("")
+
+  const [selectedAsset, setSelectedAsset] = useState(null)
 
   const captureReceipt = async () => {
     console.clear()
@@ -107,29 +172,29 @@ export default function SignIn(props:any) {
   };
 
   const clearRecieptData = ()=>{
-    
     setTimeout(()=>{
-      setMintProcess({
-        showPreviewShirt: false,
-        showReciept: false,
-        reciept: {
-          recieptImg: "",
-          hasFetched: false,
-          isFetching: false,
-          assetInfo: {
-            name: "",
-            desc: "",
-            todayDate: "",
-            shippingDate: "",
-            txHash: "",
-            nftImgUrl: "",
-            product: {
-              type: "shirt",
-              color: "white",
-              size: "normal",
-            },
+      setMintProcess((prev)=>{
+        return ({
+          ...prev,
+          reciept: {
+            recieptImg: "",
+            hasFetched: false,
+            isFetching: false,
+            assetInfo: {
+              name: "",
+              desc: "",
+              todayDate: "",
+              shippingDate: "",
+              txHash: "",
+              nftImgUrl: "",
+              product: {
+                type: "shirt",
+                color: "white",
+                size: "normal",
+              },
+            }
           }
-        }
+        })
       })
     }, 500)
   }
@@ -170,10 +235,15 @@ export default function SignIn(props:any) {
   }
 
   const openPreview = (assetData:any, imgUrl:any)=>{
-    setPreviewData({
-      asset: assetData,
-      imgUrl: imgUrl
-    })
+    setPreviewData(
+      (prev)=>{
+        return ({
+          ...prev,
+          asset: assetData,
+          imgUrl: imgUrl
+        })
+      }
+    )
     setShowPreview(true)
   }
 
@@ -215,7 +285,6 @@ export default function SignIn(props:any) {
     window.location.reload()
   }
 
-  // const [viewNfts, setViewNfts] = useState(false)
   const renderAssets = () => {
     return (
       <>
@@ -276,7 +345,8 @@ export default function SignIn(props:any) {
   }
 
   return (
-    <div className={`big-holder ${mintProcess.showReciept ? "show-reciept" : ""}`}>
+    <div className={`big-holder ${mintProcess.showForm ? "show-form" : ""} ${mintProcess.showDetails ? "show-details" : ""} ${mintProcess.showReciept ? "show-reciept" : ""}`}>
+
       {props.hideShirty ? <div className={`${showNftIntroI ? "wallet-home show-intro": "wallet-home"}`}>
         <div className="backtoHome" onClick={disconnectWallet}>
           <FaPowerOff /> <p>Disconnect Wallet</p>
@@ -302,32 +372,110 @@ export default function SignIn(props:any) {
         <div className="soft"></div>
         {renderAssets()}
       </div>}
+      
       <div className={showPreview ? "backdrop show": "backdrop"}></div>
+      
       <PreviewShirt closePreview={()=>{
         setShowPreview(false)
-        setPreviewData({
-          asset:"",
-          imgUrl: ""
+        setPreviewData((prev)=>{
+          return ({
+            ...prev,
+            asset:"",
+            imgUrl: ""
+          })
         })
+      }} openDetails={(info:any)=>{
+        if(mintProcess.disableForm){
+          setMintProcess((prev)=>{
+            return({
+              ...prev,
+              showPreviewShirt: false,
+              showForm: false,
+              showDetails: true,
+            })  
+          })
+        } else{
+          setMintProcess((prev)=>{
+            return({
+              ...prev,
+              showForm: true,
+              showDetails: false,
+              showPreviewShirt: false,
+            })  
+          })
+        }
+
+        setSelectedAsset(info)
+      }} previewData={previewData} className={showPreview ? "preview-shirt show": "preview-shirt"} updatePreviewData={updatePreviewData}/>
+      
+      <UserForm info={selectedAsset} openUserDetails={()=>{
+        setMintProcess((prev)=>{
+          return({
+            ...prev,
+            showForm: false,
+            showDetails: true,
+          })
+        })
+      }} closeUserForm={()=>{
+        setMintProcess((prev)=>{
+          return({
+            ...prev,
+            showForm: false,
+            showDetails: false,
+            showPreviewShirt: true,
+          })
+        })
+      }} />
+      
+      <UserDetails info={selectedAsset} closeUserDetails={()=>{
+        if(mintProcess.disableForm){
+          setMintProcess((prev)=>{
+            return({
+              ...prev,
+              showForm: false,
+              showDetails: false,
+              showPreviewShirt: true
+            })  
+          })
+        } else{
+          setMintProcess((prev)=>{
+            return({
+              ...prev,
+              showForm: true,
+              showDetails: false,
+              showPreviewShirt: false,
+            })  
+          })
+        }
       }} openReciept={(info:any)=>{
         setMintProcess((prev)=>{
           return({
             ...prev,
+            showForm: false,
+            showDetails: false,
+            showPreviewShirt: false,
             showReciept: true,
           })
         })
+
         generateReciept(info)
-      }} previewData={previewData} className={showPreview ? "preview-shirt show": "preview-shirt"}/>
+      }} />
+      
       <Reciept previewData={previewData} />
+      
       <PreviewReciept showing={mintProcess.showReciept} closeReciept={()=>{
         setMintProcess((prev)=>{
           return({
             ...prev,
             showReciept: false,
+            showDetails: true,
+            showForm: false,
+            showPreviewShirt: false,
           })
         })
         clearRecieptData()
-      }} previewData={previewData} isGenerating={mintProcess.reciept.isFetching} hasGenerated={mintProcess.reciept.hasFetched} recieptImage={recieptImage} />
+      }} wallet={wallet} previewData={previewData} isGenerating={mintProcess.reciept.isFetching} hasGenerated={mintProcess.reciept.hasFetched} recieptImage={recieptImage} />
+    
     </div>
   );
 }

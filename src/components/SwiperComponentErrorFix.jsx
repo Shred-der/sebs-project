@@ -13,11 +13,11 @@ const SwiperComponentErrorFix = ({assets, openPreview}) => {
       <Swiper className='assets-container-carousel mySwiper' pagination={{
           type: 'progressbar',
         }} navigation={true} modules={[Pagination, Navigation]}>
-          {assets.map((asset) => {
+          {assets.map((asset, index) => {
             const imageUrl = asset.metadata.image.replace('ipfs://', ''); // Remove the "ipfs://" prefix
             const imageSrc = `https://ipfs.io/ipfs/${imageUrl}`; // Construct the corrected image URL
             return (
-              <SwiperSlide className='nft-holder'>
+              <SwiperSlide key={index} className='nft-holder'>
                 <div onClick={()=>{
               const assetData=asset
               console.clear()

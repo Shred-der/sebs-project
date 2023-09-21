@@ -38,9 +38,9 @@ export default function Carousel() {
     },
   ]
 
-  const verifiedProjectsEl = verifiedProjects.map((project)=>{
+  const verifiedProjectsEl = verifiedProjects.map((project, index)=>{
     return (
-      <SwiperSlide>
+      <SwiperSlide key={index}>
         <p>
           {project.projectName}
           <a href={project.projectUrl} target="_blank" rel="noreferrer">
