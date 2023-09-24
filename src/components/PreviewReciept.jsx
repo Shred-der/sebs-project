@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react'
 import {FaArrowLeft, FaArrowRight} from "react-icons/fa"
 import { AssetMetadata, Transaction, largestFirst } from '@meshsdk/core'
+import { CardanoWallet } from '@meshsdk/react';
+import { useWallet } from '@meshsdk/react';
 
 const PreviewReciept = (props) => {
   const wallet = props.wallet
