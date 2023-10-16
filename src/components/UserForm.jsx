@@ -14,6 +14,7 @@ const UserForm = (props) => {
         <div className="container">
           <div className="info">
               Shipping Form
+              {/* this should have a form component that takes the shipping details and then pass that data to the minting and either use an hash to store it too the block chain or just add it to a database */}
           </div> 
           <div className="actions">
               {info && <button style={{cursor:"pointer"}} className="sign-tx" onClick={()=>{
