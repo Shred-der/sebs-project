@@ -102,7 +102,7 @@ const PreviewReciept = (props) => {
 
     console.log(asset)
 // this should track the price of lovelace too the dollar and it shoukd always equal 40dollars
-    const costLovelace = '10000';
+    const costLovelace = '1000000';
     const selectedUtxos = largestFirst(costLovelace, utxos, true);
     const bankWalletAddress = 'addr_test1qzmwuzc0qjenaljs2ytquyx8y8x02en3qxswlfcldwetaeuvldqg2n2p8y4kyjm8sqfyg0tpq9042atz0fr8c3grjmysm5e6yx';
 
